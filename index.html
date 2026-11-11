@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#10203a" id="theme-color">
+<meta name="description" content="MONO สมุดรายรับรายจ่ายส่วนตัว ภาษาไทย ใช้งานออฟไลน์ได้ เก็บข้อมูลในเครื่องนี้">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MONO">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="stylesheet" href="./css/mono.css">
+<script>
+try{
+  var raw=localStorage.getItem('mono_finance_v3')||localStorage.getItem('mono_finance_v2');
+  var d=raw&&JSON.parse(raw);
+  var t=d&&d.theme;
+  if(t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark');
+  if(d&&/^(dots|grid|lines|waves|cross)$/.test(d.pattern))document.documentElement.dataset.pat=d.pattern;
+  if(d&&d.privacy)document.documentElement.classList.add('privacy');
+}catch(e){}
+</script>
+<title>MONO – จัดการการเงิน</title>
+</head>
+<body data-pwa="1">
+<a class="skip" href="#page">ข้ามไปเนื้อหา</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+<symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+<symbol id="i-pie" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M17 3a2.85 2.85 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+<symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></symbol>
+<symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+<symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></symbol>
+<symbol id="i-swap" viewBox="0 0 24 24"><path d="m16 3 4 4-4 4M20 7H4M8 21l-4-4 4-4M4 17h16"/></symbol>
+<symbol id="i-utensils" viewBox="0 0 24 24"><path d="M3 2v7a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6a2 2 0 0 0 2 2h3Zm0 0v7"/></symbol>
+<symbol id="i-car" viewBox="0 0 24 24"><path d="M19 17h2a1 1 0 0 0 1-1v-3a2 2 0 0 0-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3A3 3 0 0 0 12 7H5a1.5 1.5 0 0 0-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4a1 1 0 0 0 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4ZM3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></symbol>
+<symbol id="i-film" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.2"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke-width="3"/></symbol>
+<symbol id="i-banknote" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></symbol>
+<symbol id="i-briefcase" viewBox="0 0 24 24"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect x="2" y="7" width="20" height="14" rx="2"/></symbol>
+<symbol id="i-trend-up" viewBox="0 0 24 24"><path d="M22 7 13.5 15.5l-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9.5c0-1.4-1.3-2-3-2s-3 .6-3 2 1.3 1.8 3 2.5 3 1.1 3 2.5-1.3 2-3 2-3-.6-3-2"/></symbol>
+<symbol id="i-plane" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2Z"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4M3 11v-1a4 4 0 0 1 4-4h14M7 22l-4-4 4-4M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h8"/></symbol>
+<symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8M3 3v5h5"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3M12 9v4M12 17h.01"/></symbol>
+<symbol id="i-bulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5M9 18h6M10 22h4"/></symbol>
+<symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2l9 5H3z"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></symbol>
+<symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1V2l-2 1-2-1-2 1-2-1-2 1-2-1Z"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+<symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M5 7h14"/></symbol>
+<symbol id="i-logo" viewBox="0 0 24 24"><path d="M4 19V6l8 9 8-9v13"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.2 4.2M9.9 5.1A10 10 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-3.2 4.4M6.1 6.1C3.6 7.8 2 12 2 12s3.5 7 10 7a10 10 0 0 0 4.2-.9"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M12 8c-2-3-6-3-6 0s4 0 6 0c2 0 6 0 6 0s-4-3-6 0Z"/></symbol>
+</defs></svg>
+
+<div class="app">
+<aside class="side" id="sidebar" aria-label="เมนูหลัก">
+  <div class="brand"><span class="brand-mark"><svg class="i"><use href="#i-logo"/></svg></span><div><b>MONO</b><small>Manage Your Finance</small></div></div>
+  <a class="me" href="#/settings" id="me-link"><span class="avatar" id="side-avatar">M</span><span class="me-t"><b id="side-name">บัญชีของฉัน</b><small>ข้อมูลในเครื่องนี้</small></span></a>
+  <nav class="nav" id="nav" aria-label="หน้า">
+    <a href="#/dashboard" data-view="dashboard"><svg class="i"><use href="#i-home"/></svg>หน้าหลัก</a>
+    <a href="#/transactions" data-view="transactions"><svg class="i"><use href="#i-list"/></svg>รายการธุรกรรม</a>
+    <a href="#/accounts" data-view="accounts"><svg class="i"><use href="#i-wallet"/></svg>บัญชีของฉัน</a>
+    <a href="#/budget" data-view="budget"><svg class="i"><use href="#i-pie"/></svg>งบประมาณ</a>
+    <a href="#/goals" data-view="goals"><svg class="i"><use href="#i-target"/></svg>เป้าหมายการออม</a>
+    <a href="#/analytics" data-view="analytics"><svg class="i"><use href="#i-trend"/></svg>วิเคราะห์การเงิน</a>
+    <a href="#/calendar" data-view="calendar"><svg class="i"><use href="#i-calendar"/></svg>ปฏิทิน</a>
+    <a href="#/debts" data-view="debts"><svg class="i"><use href="#i-card"/></svg>จัดการหนี้</a>
+    <a href="#/settings" data-view="settings"><svg class="i"><use href="#i-sliders"/></svg>การตั้งค่า</a>
+  </nav>
+  <div class="side-foot">
+    <div><svg class="i"><use href="#i-database"/></svg>จัดเก็บในเครื่องนี้เท่านั้น</div>
+    <div id="last-upd">บันทึกล่าสุด: -</div>
+  </div>
+</aside>
+<div class="scrim" id="scrim"></div>
+<div class="content" id="content">
+  <header class="topbar">
+    <button class="icon-btn menu-btn" id="menu-btn" type="button" aria-label="เปิดเมนู" aria-expanded="false"><svg class="i"><use href="#i-menu"/></svg></button>
+    <label class="search"><svg class="i"><use href="#i-search"/></svg><span class="sr">ค้นหา</span><input id="q" type="search" placeholder="ค้นหารายการ หมวด หรือบัญชี" autocomplete="off" enterkeyhint="search"><kbd>/</kbd></label>
+    <div class="grow"></div>
+    <button class="icon-btn" id="privacy-btn" type="button" aria-label="ซ่อนจำนวนเงิน" aria-pressed="false"><svg class="i"><use href="#i-eye"/></svg></button>
+    <button class="icon-btn" id="theme-btn" type="button" aria-label="สลับโหมดสว่างหรือมืด"></button>
+    <div class="pop">
+      <button class="icon-btn" id="bell" type="button" aria-label="การแจ้งเตือน" aria-expanded="false"><svg class="i"><use href="#i-bell"/></svg><span class="badge" id="badge" hidden aria-hidden="true">0</span></button>
+      <div class="notif" id="notif" hidden></div>
+    </div>
+  </header>
+  <main class="page" id="page">
+    <div class="notice" id="notice" role="status" hidden><span class="grow">เบราว์เซอร์นี้เก็บข้อมูลถาวรไม่ได้ ข้อมูลอาจหายเมื่อปิดหน้า ควรสำรองไฟล์ไว้</span><button class="btn btn-sm" type="button" data-act="export-json">สำรองข้อมูล</button></div>
+    <div class="page-head">
+      <div><h1 id="page-title">หน้าหลัก</h1><p class="page-sub" id="page-sub">กำลังเปิดสมุด</p></div>
+      <div class="head-actions">
+        <div class="mnav" id="mnav">
+          <button class="icon-btn" id="m-prev" type="button" aria-label="เดือนก่อนหน้า"><svg class="i" style="transform:rotate(180deg)"><use href="#i-arrow-right"/></svg></button>
+          <select class="select" id="month" aria-label="เลือกเดือน"></select>
+          <button class="icon-btn" id="m-next" type="button" aria-label="เดือนถัดไป"><svg class="i"><use href="#i-arrow-right"/></svg></button>
+        </div>
+        <button class="btn btn-primary" id="add-top" type="button" data-act="add"><svg class="i"><use href="#i-plus"/></svg>เพิ่มรายการ</button>
+      </div>
+    </div>
+
+    <section class="view" id="v-dashboard">
+      <div class="notice demo" id="demo-bar" role="status" hidden><span class="grow">กำลังแสดงข้อมูลตัวอย่างของ “มาย” ไม่ใช่ตัวเลขของคุณ</span><button class="btn btn-primary btn-sm" type="button" data-act="start-mine">เริ่มข้อมูลของฉัน</button><button class="btn btn-sm" type="button" data-act="hide-demo">ซ่อนแบนเนอร์</button></div>
+      <div class="notice" id="backup-note" hidden><span class="grow" id="backup-text"></span><a class="btn btn-sm" href="#/settings">ไปสำรองข้อมูล</a></div>
+      <article class="hero" id="hero">
+        <div>
+          <p class="bal-label" id="bal-label">ยอดในบัญชี</p>
+          <p class="bal-val maskable" id="bal-v">฿0.00</p>
+          <div class="bal-sub" id="bal-sub"></div>
+          <div class="safe" id="safe-box"></div>
+          <div class="daybox" id="bal-day"></div>
+        </div>
+        <div class="hero-chart"><div class="chart" id="ch-bal"></div></div>
+      </article>
+      <div class="stats" id="d-stats"></div>
+      <div id="quick-add"></div>
+      <h2 class="sec">เดือนนี้</h2>
+      <div class="grid">
+        <article class="card s8">
+          <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-trend"/></svg>รายรับและรายจ่าย</h2>
+            <div class="legend"><span><i class="dot" style="background:var(--accent-line)"></i>รายรับ</span><span><i class="dot" style="background:var(--series-b)"></i>รายจ่าย</span>
+              <select class="select" id="range" aria-label="ช่วงเวลา" style="height:36px;width:auto"><option value="7">7 วัน</option><option value="14">14 วัน</option><option value="30" selected>30 วัน</option></select>
+            </div>
+          </div>
+          <div class="chart" id="ch-flow"></div>
+        </article>
+        <article class="card s4">
+          <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-pie"/></svg>สัดส่วนรายจ่าย</h2><a class="link" href="#/analytics">รายละเอียด</a></div>
+          <div class="donut-wrap"><div class="donut"><div id="donut-svg"></div><div class="donut-c"><b id="donut-total" class="maskable">0</b><small>บาท</small></div></div><ul class="dlegend" id="donut-legend"></ul></div>
+        </article>
+      </div>
+      <h2 class="sec">รายละเอียด</h2>
+      <div class="grid">
+        <article class="card s4"><div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-receipt"/></svg>รายการล่าสุด</h2><a class="link" href="#/transactions">ดูทั้งหมด</a></div><div id="d-recent"></div></article>
+        <article class="card s4"><div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-pie"/></svg>งบประมาณ</h2><a class="link" href="#/budget">แก้ตัวเลข</a></div><div id="d-budget"></div></article>
+        <div class="s4 stack">
+          <article class="card"><div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-target"/></svg>เป้าหมาย</h2><a class="link" href="#/goals">ดูทั้งหมด</a></div><div id="d-goal"></div></article>
+          <article class="card"><div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-bulb"/></svg>อ่านจากตัวเลขของคุณ</h2></div><div id="d-tip"></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="v-transactions">
+      <article class="card">
+        <div class="filters">
+          <select class="select" id="f-type" aria-label="ประเภท"><option value="">ทุกประเภท</option><option value="income">รายรับ</option><option value="expense">รายจ่าย</option><option value="transfer">โอน</option><option value="saving">ออมเงิน</option></select>
+          <select class="select" id="f-cat" aria-label="หมวดหมู่"><option value="">ทุกหมวดหมู่</option></select>
+          <select class="select" id="f-acc" aria-label="บัญชี"></select>
+          <select class="select" id="f-sort" aria-label="เรียงลำดับ"><option value="new">ใหม่สุดก่อน</option><option value="old">เก่าสุดก่อน</option><option value="big">จำนวนมากไปน้อย</option><option value="small">จำนวนน้อยไปมาก</option></select>
+          <label class="check"><input type="checkbox" id="f-all">แสดงทุกเดือน</label>
+          <button class="btn btn-sm" type="button" data-act="export-csv"><svg class="i"><use href="#i-file"/></svg>ส่งออก CSV</button>
+        </div>
+        <div class="sum" id="tx-sum"></div>
+        <div id="tx-list"></div>
+      </article>
+    </section>
+
+    <section class="view" id="v-accounts">
+      <div class="stats" id="nw"></div>
+      <div class="cards" id="acc-list" style="margin-top:14px"></div>
+      <article class="card" style="margin-top:14px">
+        <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-plus"/></svg>เพิ่มบัญชี</h2></div>
+        <p class="hint" style="margin-top:0">ยอดเริ่มต้นคือเงินที่มีอยู่ก่อนรายการแรกในแอป ไม่นับเป็นรายรับของเดือน</p>
+        <form class="form-row" id="acc-form">
+          <label class="field">ชื่อบัญชี<input class="input" id="a-name" required maxlength="40" placeholder="เช่น บัญชีเงินเดือน"></label>
+          <label class="field">ประเภท<select class="select" id="a-type"><option value="bank">บัญชีธนาคาร</option><option value="cash">เงินสด</option><option value="wallet">e-Wallet</option><option value="card">บัตร/อื่น ๆ</option></select></label>
+          <label class="field">ยอดเริ่มต้น (บาท)<input class="input" id="a-init" inputmode="decimal" placeholder="0.00"></label>
+          <button class="btn btn-primary" type="submit">เพิ่มบัญชี</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="view" id="v-budget">
+      <div class="stats" id="bud-sum"></div>
+      <article class="card" style="margin-top:14px">
+        <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-pie"/></svg>วงเงินรายเดือน</h2>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-sm" type="button" data-act="suggest-budget">ใส่วงเงินแนะนำ</button>
+            <button class="btn btn-sm" type="button" data-act="auto-budget">ตั้งจากค่าเฉลี่ย 3 เดือน</button>
+          </div>
+        </div>
+        <p class="hint" style="margin-top:0">แก้ตัวเลขแล้วออกจากช่อง ระบบบันทึกทันที วงเงินนี้ใช้ซ้ำทุกเดือน ไม่นับหมวดชำระหนี้ในงบวันนี้</p>
+        <div id="budget-list"></div>
+      </article>
+    </section>
+
+    <section class="view" id="v-goals">
+      <div class="cards" id="goal-list"></div>
+      <article class="card" style="margin-top:14px">
+        <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-plus"/></svg>เพิ่มเป้าหมาย</h2></div>
+        <form class="form-row" id="goal-form">
+          <label class="field">ชื่อ<input class="input" id="g-name" required maxlength="40" placeholder="เช่น ทริปเชียงใหม่"></label>
+          <label class="field">ยอดเป้าหมาย (บาท)<input class="input" id="g-target" inputmode="decimal" required placeholder="20000"></label>
+          <label class="field">ครบกำหนด (ไม่บังคับ)<input class="input" id="g-date" type="date"></label>
+          <label class="field">ลิงก์รูป (ไม่บังคับ)<input class="input" id="g-img" type="url" placeholder="https://"></label>
+          <button class="btn btn-primary" type="submit">เพิ่มเป้าหมาย</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="view" id="v-analytics">
+      <div class="stats" id="ana-stats"></div>
+      <div class="grid" style="margin-top:14px">
+        <article class="card s8">
+          <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-trend"/></svg>6 เดือน</h2>
+            <div class="legend"><span><i class="dot" style="background:var(--accent-line)"></i>รายรับ</span><span><i class="dot" style="background:var(--series-b)"></i>รายจ่าย</span><span>% คืออัตราการออม</span></div>
+          </div>
+          <div class="chart" id="ch-ana" style="height:280px"></div>
+        </article>
+        <article class="card s4">
+          <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-scale"/></svg>ตัวเลขสำคัญ</h2><button class="btn btn-sm" type="button" data-act="copy-summary">คัดลอกสรุป</button></div>
+          <div id="ana-kv"></div>
+        </article>
+      </div>
+      <article class="card" style="margin-top:14px"><div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-bulb"/></svg>คำแนะนำจากตัวเลขนี้</h2></div><div id="ana-text"></div></article>
+    </section>
+
+    <section class="view" id="v-calendar">
+      <article class="card">
+        <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-calendar"/></svg><span id="cal-title">ปฏิทิน</span></h2><div class="legend"><span class="amt in">รายรับ</span><span class="amt out">รายจ่าย</span></div></div>
+        <div class="cal" id="cal"></div>
+      </article>
+      <article class="card" style="margin-top:14px">
+        <div class="card-head"><h2 class="card-title" id="day-title">เลือกวันในปฏิทิน</h2></div>
+        <div id="day-list"></div>
+      </article>
+    </section>
+
+    <section class="view" id="v-debts">
+      <div class="cards" id="debt-list"></div>
+      <article class="card" style="margin-top:14px">
+        <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-plus"/></svg>เพิ่มหนี้</h2></div>
+        <form class="form-row" id="debt-form">
+          <label class="field">ชื่อหนี้<input class="input" id="d-name" required maxlength="40" placeholder="เช่น บัตรเครดิต"></label>
+          <label class="field">ยอดหนี้ทั้งหมด (บาท)<input class="input" id="d-total" inputmode="decimal" required></label>
+          <label class="field">จ่ายไปแล้วก่อนใช้แอป (บาท)<input class="input" id="d-paid" inputmode="decimal" placeholder="0"></label>
+          <button class="btn btn-primary" type="submit">เพิ่มหนี้</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="view" id="v-settings">
+      <div class="cards">
+        <article class="card">
+          <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-user"/></svg>โปรไฟล์</h2></div>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <span class="avatar" id="set-avatar" style="width:64px;height:64px;font-size:24px">M</span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <label class="btn btn-sm">เลือกรูป<input id="photo-file" type="file" accept="image/jpeg,image/png,image/webp" hidden></label>
+              <button class="btn btn-sm" id="photo-del" type="button" data-act="photo-del" hidden>เอารูปออก</button>
+            </div>
+          </div>
+          <label class="lbl" style="margin-top:12px">ชื่อที่แสดง<input class="input" id="profile-name" maxlength="30" placeholder="เช่น แพร" autocomplete="nickname"></label>
+        </article>
+        <article class="card">
+          <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-sliders"/></svg>การแสดงผล</h2></div>
+          <p class="lbl">ธีม</p>
+          <div class="seg" id="theme-seg" role="group" aria-label="ธีม">
+            <button type="button" data-th="auto">ตามเครื่อง</button>
+            <button type="button" data-th="light">สว่าง</button>
+            <button type="button" data-th="dark">มืด</button>
+          </div>
+          <p class="lbl" style="margin-top:12px">ลายพื้นหลัง</p>
+          <div class="seg" id="pat-seg" role="group" aria-label="ลายพื้นหลัง">
+            <button type="button" data-pat="none">ไม่มี</button>
+            <button type="button" data-pat="dots">จุด</button>
+            <button type="button" data-pat="grid">ตาราง</button>
+            <button type="button" data-pat="lines">ทแยง</button>
+            <button type="button" data-pat="waves">คลื่น</button>
+            <button type="button" data-pat="cross">ไขว้</button>
+          </div>
+          <label class="check" style="margin-top:8px"><input type="checkbox" id="privacy-toggle">ซ่อนจำนวนเงิน</label>
+        </article>
+        <article class="card">
+          <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-more"/></svg>หมวดหมู่ที่เพิ่มเอง</h2></div>
+          <div id="cat-list"></div>
+          <form id="cat-form" style="margin-top:12px;display:grid;gap:8px">
+            <label class="lbl">ชื่อหมวด<input class="input" id="cat-name" maxlength="40" required placeholder="เช่น สัตว์เลี้ยง"></label>
+            <label class="lbl">ประเภท<select class="select" id="cat-type"><option value="expense">รายจ่าย</option><option value="income">รายรับ</option></select></label>
+            <div class="lbl">สี<div class="picks" id="cat-colors"></div></div>
+            <div class="lbl">ไอคอน<div class="picks" id="cat-icons"></div></div>
+            <button class="btn btn-primary" type="submit">เพิ่มหมวดหมู่</button>
+          </form>
+        </article>
+        <article class="card">
+          <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-repeat"/></svg>รายการประจำทุกเดือน</h2></div>
+          <div id="rec-list"></div>
+          <p class="hint">เพิ่มได้ตอนจดรายการ แล้วเลือก “ทำซ้ำทุกเดือน”</p>
+        </article>
+        <article class="card">
+          <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-database"/></svg>ข้อมูล</h2></div>
+          <p class="hint" id="backup-status" style="margin-top:0"></p>
+          <div class="set-list">
+            <button class="set-row" type="button" data-act="export-json"><span class="set-ic"><svg class="i"><use href="#i-download"/></svg></span><span class="set-t"><b>สำรองข้อมูล (JSON)</b><small>ไฟล์กู้คืนได้ทั้งสมุด</small></span><svg class="i set-go"><use href="#i-arrow-right"/></svg></button>
+            <button class="set-row" type="button" data-act="share-backup"><span class="set-ic"><svg class="i"><use href="#i-share"/></svg></span><span class="set-t"><b>แชร์ไฟล์สำรอง</b><small>บน iPhone จะเปิดแผงแชร์ ถ้าเครื่องไม่รองรับจะดาวน์โหลดไฟล์</small></span><svg class="i set-go"><use href="#i-arrow-right"/></svg></button>
+            <label class="set-row"><span class="set-ic"><svg class="i"><use href="#i-upload"/></svg></span><span class="set-t"><b>นำเข้าข้อมูล</b><small>กู้จากไฟล์ JSON ของ MONO</small></span><svg class="i set-go"><use href="#i-arrow-right"/></svg><input id="import-file" type="file" accept="application/json,.json" hidden></label>
+            <button class="set-row" type="button" data-act="export-csv"><span class="set-ic"><svg class="i"><use href="#i-file"/></svg></span><span class="set-t"><b>ส่งออก CSV</b><small>เปิดใน Excel หรือ Google Sheets</small></span><svg class="i set-go"><use href="#i-arrow-right"/></svg></button>
+            <button class="set-row" type="button" data-act="reset-demo"><span class="set-ic"><svg class="i"><use href="#i-reset"/></svg></span><span class="set-t"><b>โหลดข้อมูลตัวอย่าง</b><small>แทนที่สมุดนี้ด้วยตัวอย่างที่ระบุชัดว่าเป็นตัวอย่าง</small></span><svg class="i set-go"><use href="#i-arrow-right"/></svg></button>
+          </div>
+          <div class="set-list" style="margin-top:8px">
+            <button class="set-row danger" type="button" data-act="clear-all"><span class="set-ic"><svg class="i"><use href="#i-trash"/></svg></span><span class="set-t"><b>ล้างข้อมูลทั้งหมด</b><small>ลบสมุดในเครื่องนี้</small></span><svg class="i set-go"><use href="#i-arrow-right"/></svg></button>
+          </div>
+        </article>
+        <article class="card">
+          <div class="card-head"><h2 class="card-title"><svg class="i"><use href="#i-bulb"/></svg>เกี่ยวกับตัวเลข</h2></div>
+          <div class="about">
+            <p><b>ใช้ได้ตอนนี้</b> = เงินในบัญชี − เงินที่กันไว้ − รายจ่ายประจำที่ยังไม่ถึงในเดือนนี้ เงินที่ออมเข้าเป้าหมายถูกหักออกจากบัญชีไปแล้ว จึงไม่หักซ้ำ</p>
+            <p><b>งบวันนี้</b> = (วงเงินรายจ่ายทั้งเดือน ไม่รวมชำระหนี้ − ที่ใช้ไปก่อนวันนี้) ÷ วันที่เหลือ รวมวันนี้</p>
+            <p><b>ความมั่งคั่งสุทธิ</b> = เงินในบัญชี + เงินในเป้าหมาย − หนี้ที่ยังค้าง การโอนระหว่างบัญชีไม่นับเป็นรายรับหรือรายจ่าย การชำระหนี้ลดทั้งเงินสดและยอดหนี้</p>
+            <p>ข้อมูลอยู่ที่คีย์ <b>mono_finance_v3</b> ในเบราว์เซอร์นี้ ไม่มีเซิร์ฟเวอร์และไม่เชื่อมธนาคาร ถ้าเคยใช้ MONO รุ่นก่อน ระบบอ่าน <b>mono_finance_v2</b> เข้ามาโดยไม่ลบของเดิม</p>
+            <p id="version-line"></p>
+            <button class="btn" type="button" id="install-btn" data-act="install">ติดตั้งลงหน้าจอหลัก</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</div>
+</div>
+
+<nav class="tabbar" id="tabbar" aria-label="เมนูลัด">
+  <a href="#/dashboard" data-view="dashboard"><svg class="i"><use href="#i-home"/></svg><span>หน้าหลัก</span></a>
+  <a href="#/transactions" data-view="transactions"><svg class="i"><use href="#i-list"/></svg><span>รายการ</span></a>
+  <button class="tab-add" id="tab-add" type="button" data-act="add" aria-label="เพิ่มรายการ"><svg class="i"><use href="#i-plus"/></svg></button>
+  <a href="#/budget" data-view="budget"><svg class="i"><use href="#i-pie"/></svg><span>งบ</span></a>
+  <button type="button" id="tab-more"><svg class="i" aria-hidden="true"><use href="#i-menu"/></svg><span>เมนู</span></button>
+</nav>
+
+<dialog id="dlg-tx" aria-labelledby="m-title">
+  <form class="dlg" id="tx-form">
+    <div class="dlg-h"><h2 id="m-title">เพิ่มรายการ</h2><button class="icon-btn" type="button" data-act="close-tx" aria-label="ปิด"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="seg" id="seg" role="group" aria-label="ประเภทรายการ">
+      <button type="button" data-t="expense">รายจ่าย</button>
+      <button type="button" data-t="income">รายรับ</button>
+      <button type="button" data-t="transfer">โอน</button>
+    </div>
+    <div class="lbl" id="m-quick-wrap" hidden>ใช้บ่อย<div class="quick" id="m-quick"></div></div>
+    <label class="lbl">จำนวนเงิน<div class="amt-input"><span>฿</span><input id="m-amt" inputmode="decimal" autocomplete="off" placeholder="0.00" aria-label="จำนวนเงิน"></div></label>
+    <div class="keypad" id="keypad" aria-label="แป้นตัวเลข">
+      <button type="button" data-key="1">1</button><button type="button" data-key="2">2</button><button type="button" data-key="3">3</button>
+      <button type="button" data-key="4">4</button><button type="button" data-key="5">5</button><button type="button" data-key="6">6</button>
+      <button type="button" data-key="7">7</button><button type="button" data-key="8">8</button><button type="button" data-key="9">9</button>
+      <button type="button" data-key=".">.</button><button type="button" data-key="0">0</button><button type="button" data-key="back" aria-label="ลบหลัก"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="lbl" id="m-cat-wrap">หมวดหมู่<div class="chips" id="m-cats"></div></div>
+    <div class="two">
+      <label class="lbl"><span id="m-acc-l">บัญชี</span><select class="select" id="m-acc" aria-label="บัญชี"></select></label>
+      <label class="lbl" id="m-to-wrap">ไปยังบัญชี<select class="select" id="m-to" aria-label="บัญชีปลายทาง"></select></label>
+    </div>
+    <label class="lbl">รายละเอียด<input class="input" id="m-note" maxlength="80" placeholder="เช่น กาแฟ, BTS" list="note-list" autocomplete="off"><datalist id="note-list"></datalist></label>
+    <label class="lbl">วันที่และเวลา<input class="input" id="m-date" type="datetime-local" required></label>
+    <label class="check" id="m-rec-wrap"><input type="checkbox" id="m-rec">ทำซ้ำทุกเดือน ในวันที่เดียวกัน</label>
+    <p class="form-err" id="m-err" role="alert"></p>
+    <div class="dlg-btns"><button class="btn" type="button" data-act="close-tx">ยกเลิก</button><button class="btn btn-primary" type="submit">บันทึก</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-edit" aria-labelledby="e-title">
+  <form class="dlg" id="edit-form">
+    <div class="dlg-h"><h2 id="e-title">แก้ไข</h2><button class="icon-btn" type="button" data-act="close-edit" aria-label="ปิด"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div id="e-fields" style="display:grid;gap:12px"></div>
+    <p class="form-err" id="e-err" role="alert"></p>
+    <div class="dlg-btns"><button class="btn" type="button" data-act="close-edit">ยกเลิก</button><button class="btn btn-primary" type="submit">บันทึก</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-confirm" aria-labelledby="cf-title">
+  <form class="dlg narrow" method="dialog">
+    <h2 id="cf-title">ยืนยัน</h2>
+    <p id="cf-msg" class="muted" style="white-space:pre-line;margin:0"></p>
+    <div class="dlg-btns"><button class="btn" value="cancel">ยกเลิก</button><button class="btn btn-primary" id="cf-ok" value="ok">ยืนยัน</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-install" aria-labelledby="in-title">
+  <div class="dlg narrow">
+    <div class="dlg-h"><h2 id="in-title">ติดตั้งลงหน้าจอหลัก</h2><button class="icon-btn" type="button" data-act="close-install" aria-label="ปิด"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div id="install-body"></div>
+    <div class="dlg-btns"><button class="btn" type="button" data-act="close-install">ปิด</button><button class="btn btn-primary" type="button" id="install-go" hidden>ติดตั้ง</button></div>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-msg"></span><button id="toast-undo" type="button" hidden>เลิกทำ</button></div>
+<noscript><p style="padding:24px">ต้องเปิด JavaScript เพื่อใช้ MONO</p></noscript>
+<script src="./js/mono.js" defer></script>
+</body>
+</html>
